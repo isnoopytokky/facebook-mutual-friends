@@ -7,6 +7,9 @@
     var gfx = arbor.Graphics(canvas)
     var particleSystem = null
 
+    ctx.canvas.width  = window.innerWidth;
+    ctx.canvas.height = window.innerHeight - $('#search').height();
+
     var that = {
       init:function(system){
         particleSystem = system

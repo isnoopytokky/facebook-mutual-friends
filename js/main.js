@@ -1,23 +1,18 @@
  function login() {
-    console.log("logging in")
     $( "#progressbar" ).progressbar({ value: 70 });
     FB.login(function(response) {
-        console.log("got response")
         $( "#progressbar" ).progressbar({ value: 80 });
         if (response.authResponse) {
-            console.log("connected")
             $( "#progressbar" ).progressbar({ value: 90 });
             // connected
             setupSearch(response.authResponse.accessToken);
         } else {
-            console.log("cancelled")
             // cancelled
         }
     });
   }
  // Additional JS functions here
   window.fbAsyncInit = function() {
-    console.log('begin fbAsyncInit')
     $( "#progressbar" ).progressbar({ value: 20 });
     FB.init({
       appId      : '351583388282176', // App ID
@@ -26,26 +21,20 @@
       cookie     : true, // enable cookies to allow the server to access the session
       xfbml      : true  // parse XFBML
     });
-    console.log("init is done")
     $( "#progressbar" ).progressbar({ value: 30 });
 
-    console.log("getting login status")
     $( "#progressbar" ).progressbar({ value: 40 });
     FB.getLoginStatus(function(response) {
-        console.log("got status")
         $( "#progressbar" ).progressbar({ value: 50 });
       if (response.status === 'connected') {
-        console.log("connected")
         $( "#progressbar" ).progressbar({ value: 90 });
         setupSearch(response.authResponse.accessToken);
 
       } else if (response.status === 'not_authorized') {
-        console.log("not_authorized")
         $( "#progressbar" ).progressbar({ value: 60 });
         // not_authorized
         login();
       } else {
-        console.log("not logged in")
         $( "#progressbar" ).progressbar({ value: 60 });
         // not_logged_in
         login();
@@ -69,7 +58,6 @@
 
 
 function setupSearch(accessToken) {
-    console.log("starting shit")
     $( "#progressbar" ).progressbar({ value: 100 });
     $( "#progressbar" ).hide();
     var sys = arbor.ParticleSystem(600, 150, 0.5) // create the system with sensible repulsion/stiffness/friction
