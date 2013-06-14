@@ -16,7 +16,7 @@
     $( "#progressbar" ).progressbar({ value: 20 });
     FB.init({
       appId      : '351583388282176', // App ID
-      channelUrl : '//logstown.mycloudnas.com/fb/channel.html', // Channel File
+      channelUrl : '//loganjoecks.com/mutual-friends/channel.html', // Channel File
       status     : true, // check login status
       cookie     : true, // enable cookies to allow the server to access the session
       xfbml      : true  // parse XFBML
