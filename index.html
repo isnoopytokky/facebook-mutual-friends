@@ -8,31 +8,32 @@
     </head>
     <body>
         <div id="wrapper">
-        <div id="cell">
-        <div id="watermark">
-            <p></p>
-        </div>
-        </div>
+            <div id="cell">
+                <div id="watermark">
+                    <p></p>
+                </div>
+            </div>
         </div>
 
-        <div id="progressbar"></div>
-         
         <div id="search" class="centered">
             <h1> Visualize your Mutual Friends with... </h1>
-          <form>
-          <fieldset>
-            <input id="name" type="text" placeholder="Enter a friend..." class="input-large search-query" />
-            <span class="noText" id="controls">Click these friends or enter another to get a new graph
-            <strong>
-            <input type="radio" name="lines" id="all" value="All" checked> Show all connections
-            <input type="radio" name="lines" id="hovered" value="Hovered"> Only Hovered
-            </strong>
-            </span>
-          </fieldset>
+          <form class="form-inline">
+              <fieldset>
+                <input id="name" type="text" placeholder="Enter a friend..." class="input-large search-query" />
+                <span class="noText" id="controls">Click these friends or enter another to get a new graph
+                    <strong>
+                        <label for="all">Show All Connections</label>
+                        <input type="radio" name="lines" id="all" value="All" checked> 
+                        <label for="hovered">Only Hovered</label>
+                        <input type="radio" name="lines" id="hovered" value="Hovered">
+                    </strong>
+                </span>
+              </fieldset>
           </form>
+          <h4><em>(Allow Pop-ups to Log in)</em></h4>
         </div>
        
-        <div class="container-fluid">
+        <div id="graph" class="container-fluid">
             <canvas id="viewport"></canvas>
         </div>
 

@@ -171,12 +171,9 @@
             if (dragged===null || dragged.node===undefined) return
             if (dragged.node !== null) {
                 if(move===0) {
-							
         					var clickedNode = dragged.node;
-        					var newId = dragged.node.name;
-                  var name = dragged.node.data.label;
-        					
-                  getUserInfo(particleSystem, newId, name)
+                  
+                  drawGraph(particleSystem, dragged.node.name);
                 }
                 dragged.node.fixed = false
             }

@@ -1,9 +1,6 @@
  function login() {
-    $( "#progressbar" ).progressbar({ value: 70 });
     FB.login(function(response) {
-        $( "#progressbar" ).progressbar({ value: 80 });
         if (response.authResponse) {
-            $( "#progressbar" ).progressbar({ value: 90 });
             // connected
             setupSearch(response.authResponse.accessToken);
         } else {
@@ -13,7 +10,6 @@
   }
  // Additional JS functions here
   window.fbAsyncInit = function() {
-    $( "#progressbar" ).progressbar({ value: 20 });
     FB.init({
       appId      : '351583388282176', // App ID
       channelUrl : '//loganjoecks.com/mutual-friends/channel.html', // Channel File
@@ -21,21 +17,15 @@
       cookie     : true, // enable cookies to allow the server to access the session
       xfbml      : true  // parse XFBML
     });
-    $( "#progressbar" ).progressbar({ value: 30 });
 
-    $( "#progressbar" ).progressbar({ value: 40 });
     FB.getLoginStatus(function(response) {
-        $( "#progressbar" ).progressbar({ value: 50 });
       if (response.status === 'connected') {
-        $( "#progressbar" ).progressbar({ value: 90 });
         setupSearch(response.authResponse.accessToken);
 
       } else if (response.status === 'not_authorized') {
-        $( "#progressbar" ).progressbar({ value: 60 });
         // not_authorized
         login();
       } else {
-        $( "#progressbar" ).progressbar({ value: 60 });
         // not_logged_in
         login();
       }
@@ -48,7 +38,6 @@
 
   // Load the SDK Asynchronously
   (function(d){
-    $( "#progressbar" ).progressbar({ value: 10 });
      var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
      if (d.getElementById(id)) {return;}
      js = d.createElement('script'); js.id = id; js.async = true;
@@ -58,8 +47,9 @@
 
 
 function setupSearch(accessToken) {
-    $( "#progressbar" ).progressbar({ value: 100 });
-    $( "#progressbar" ).hide();
+    $("h4").addClass("noText");
+
+    //Initialize arbor.js graph
     var sys = arbor.ParticleSystem(600, 150, 0.5) // create the system with sensible repulsion/stiffness/friction
     sys.parameters({gravity:true}) // use center-gravity to make the graph settle nicely (ymmv)
     sys.renderer = Renderer("#viewport") // our newly created renderer will have its .init() method called shortly by sys...
@@ -92,8 +82,10 @@ function setupSearch(accessToken) {
             $("h1").addClass("noText");
             $("#controls").removeClass("noText");
             $("#controls").addClass("contFormat");
+            $('#name').val(ui.item.value);
 
-            getUserInfo(sys, ui.item.id, ui.item.value)
+
+            drawGraph(sys, ui.item.id)
             
             return false;
         },
@@ -101,42 +93,42 @@ function setupSearch(accessToken) {
     });
 }
 
-function getUserInfo(sys, id, name) {
-    $('#name').val(name)
+// Draws main graph from searched or clicked friend
+function drawGraph(sys, id) {
+    sys.prune(function(node, pt){return true});  //Clear current graph
 
-    FB.api(id, function(response) {$("p").html(response.first_name)});
-
-    sys.prune(function(node, pt){return true});
-
-    var url = 'me/mutualfriends/' + id
+    // Get mutual friends of selected friend
+    var url = id + '?fields=mutualfriends,first_name'
     FB.api(url, function(response) {
-        var friends = new Array();
-        for(var i=0; i < response.data.length; i++) {
-            (function(){
-                var k = i;
-                friends.push(response.data[i].id);
+        $("p").html(response.first_name);  // Fill in watermark with first name
 
-                FB.api(response.data[i].id + '/picture?type=square', function(res){
-                    sys.addNode(response.data[k].id, {label:response.data[k].name, url:res.data.url, hovered:false})
-                });
-            })();
+        // Create URL containing all mutual friends of selected friends
+        var url = '?ids=';
+        for(var i=0; i < response.mutualfriends.data.length; i++) {
+            url += response.mutualfriends.data[i].id + ',';
         }
 
-        for(var j=0; j < friends.length; j++) {
-            (function(){
-                var k = j;
-                var req = 'me/mutualfriends/' + friends[j];
+        url = url.substring(0,url.length-1); //get rid of trailing comma
+
+        //Get name, mutual friends, and picture of mutual friends of selected friend
+        FB.api(url + '&fields=name,mutualfriends,picture', function(res){
+            var friendsInGraph = new Array();
             
-                FB.api(req, function(resp){
-                    for(var i=0; i < resp.data.length; i++) {
-                        if(jQuery.inArray(resp.data[i].id, friends) >= 0) {
-                            if(sys.getEdges(friends[k], resp.data[i].id).length === 0){
-                                sys.addEdge(friends[k], resp.data[i].id)
-                            }
-                        }
+            // For each mutual friend of selected friend, add node and possible edges
+            jQuery.each(res, function(id, friend) {
+                sys.addNode(id, {label:friend.name, url:friend.picture.data.url, hovered:false});
+
+                for ( var i=0; i < friendsInGraph.length; i++ ) {
+                    isFriendInGraph = friend.mutualfriends.data.some( function(mutual) {
+                        return mutual.id === friendsInGraph[i];
+                    });
+
+                    if (isFriendInGraph) {
+                        sys.addEdge(friendsInGraph[i], id);
                     }
-                });
-            })();
-        }
+                }
+                friendsInGraph.push(id);
+            });
+        });
     });
 }
