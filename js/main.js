@@ -82,10 +82,8 @@ function setupSearch(accessToken) {
             $("h1").addClass("noText");
             $("#controls").removeClass("noText");
             $("#controls").addClass("contFormat");
-            $('#name').val(ui.item.value);
 
-
-            drawGraph(sys, ui.item.id)
+            drawGraph(sys, ui.item.id, ui.item.value)
             
             return false;
         },
@@ -94,7 +92,9 @@ function setupSearch(accessToken) {
 }
 
 // Draws main graph from searched or clicked friend
-function drawGraph(sys, id) {
+function drawGraph(sys, id, name) {
+    $('#name').val(name);  //update search field with selected friend
+
     sys.prune(function(node, pt){return true});  //Clear current graph
 
     // Get mutual friends of selected friend

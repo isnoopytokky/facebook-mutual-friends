@@ -173,7 +173,7 @@
                 if(move===0) {
         					var clickedNode = dragged.node;
                   
-                  drawGraph(particleSystem, dragged.node.name);
+                  drawGraph(particleSystem, dragged.node.name, dragged.node.data.label);
                 }
                 dragged.node.fixed = false
             }
