@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Mutual Friends</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/jquery-ui.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="cell">
+                <div id="watermark">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="search" class="centered">
+            <h1> Visualize your Mutual Friends with... </h1>
+          <form class="form-inline">
+              <fieldset>
+                <input id="name" type="text" placeholder="Enter a friend..." class="input-large search-query" />
+                <span class="noText" id="controls">Click these friends or enter another to get a new graph
+                    <strong>
+                        <label for="all">Show All Connections</label>
+                        <input type="radio" name="lines" id="all" value="All" checked> 
+                        <label for="hovered">Only Hovered</label>
+                        <input type="radio" name="lines" id="hovered" value="Hovered">
+                    </strong>
+                </span>
+              </fieldset>
+          </form>
+          <h4><em>(Allow Pop-ups to Log in)</em></h4>
+        </div>
+       
+        <div id="graph" class="container-fluid">
+            <canvas id="viewport"></canvas>
+        </div>
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/arbor.js"></script> 
+        <script src="js/arbor-tween.js"></script>   
+        <script src="js/graphics.js"></script>  
+        <script src="js/renderer.js"></script>
+        <div id="fb-root"></div>
+        <script src="js/main.js"></script>
+    </body>
+</html>
